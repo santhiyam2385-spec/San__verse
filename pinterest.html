@@ -1,0 +1,392 @@
+PHOTO_URI=$(cat /tmp/photo_data_uri.txt)
+
+cat > /mnt/user-data/outputs/sanverse.html << 'HTMLEOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>san__verse | curated by Santhiya</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --plum:       #3b1f4e;
+    --violet:     #6b3fa0;
+    --lavender:   #c3a8e1;
+    --blush:      #f5eeff;
+    --mist:       #faf7fd;
+    --ink:        #1e0f2e;
+    --mid:        #7b5fa0;
+    --gold:       #c9a96e;
+    --white:      #ffffff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Jost', sans-serif; background: var(--mist); color: var(--ink); overflow-x: hidden; }
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    background-size: 200px; opacity: 0.4;
+  }
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 5vw;
+    background: rgba(250, 247, 253, 0.88);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(195, 168, 225, 0.25);
+    animation: fadeDown 0.8s ease both;
+  }
+  .nav-logo { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 500; font-size: 1.55rem; color: var(--plum); letter-spacing: 0.04em; text-decoration: none; }
+  .nav-logo span { color: var(--gold); }
+  nav ul { list-style: none; display: flex; gap: 2.4rem; }
+  nav ul a { font-family: 'Jost', sans-serif; font-size: 0.78rem; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase; color: var(--plum); text-decoration: none; position: relative; padding-bottom: 2px; transition: color 0.3s; }
+  nav ul a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--gold); transition: width 0.35s ease; }
+  nav ul a:hover { color: var(--violet); }
+  nav ul a:hover::after { width: 100%; }
+  .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 7rem 5vw 4rem; gap: 3rem; position: relative; }
+  .hero::after { content: ''; position: absolute; top: -20%; right: -10%; width: 55vw; height: 55vw; border-radius: 50%; background: radial-gradient(circle, rgba(107,63,160,0.1) 0%, transparent 70%); pointer-events: none; }
+  .hero-text { animation: fadeUp 1s 0.2s ease both; }
+  .hero-eyebrow { font-family: 'Jost', sans-serif; font-size: 0.72rem; font-weight: 300; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; }
+  .hero-title { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(2.8rem, 5vw, 4.5rem); font-weight: 400; line-height: 1.1; color: var(--plum); margin-bottom: 1.5rem; }
+  .hero-title em { font-style: normal; color: var(--violet); }
+  .hero-sub { font-family: 'EB Garamond', serif; font-style: italic; font-size: 1.15rem; line-height: 1.75; color: #5a3f78; max-width: 440px; margin-bottom: 2.5rem; }
+  .btn { display: inline-block; padding: 0.85rem 2.2rem; font-family: 'Jost', sans-serif; font-size: 0.76rem; font-weight: 400; letter-spacing: 0.18em; text-transform: uppercase; text-decoration: none; border-radius: 2px; cursor: pointer; border: none; transition: transform 0.3s, box-shadow 0.3s, background 0.3s; }
+  .btn-primary { background: var(--plum); color: var(--white); box-shadow: 0 4px 24px rgba(59,31,78,0.25); }
+  .btn-primary:hover { background: var(--violet); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(107,63,160,0.35); }
+  .btn-outline { background: transparent; color: var(--plum); border: 1px solid var(--lavender); margin-left: 1rem; }
+  .btn-outline:hover { background: var(--blush); border-color: var(--violet); transform: translateY(-2px); }
+  .hero-visual { animation: fadeUp 1s 0.4s ease both; display: flex; justify-content: center; }
+  .profile-frame { position: relative; width: min(380px, 88vw); }
+  .profile-frame::before { content: ''; position: absolute; top: -16px; left: -16px; right: 16px; bottom: 16px; border: 1.5px solid var(--lavender); border-radius: 4px; z-index: 0; }
+  .profile-photo-wrap { position: relative; z-index: 1; width: 100%; aspect-ratio: 3/4; border-radius: 4px; overflow: hidden; background: linear-gradient(135deg, var(--blush) 0%, #e8d5f7 100%); box-shadow: 0 12px 48px rgba(59,31,78,0.18); }
+  .profile-photo-wrap img { width: 100%; height: 100%; object-fit: contain; display: block; background: #fff; }
+  section { position: relative; z-index: 1; }
+  .section-inner { max-width: 1100px; margin: 0 auto; padding: 5rem 5vw; }
+  .section-label { font-family: 'Jost', sans-serif; font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 400; color: var(--plum); line-height: 1.2; margin-bottom: 1.8rem; }
+  .divider { display: flex; align-items: center; gap: 1.2rem; padding: 0 5vw; max-width: 1100px; margin: 0 auto; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--lavender); opacity: 0.4; }
+  .divider-symbol { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: var(--lavender); }
+  #about { background: var(--white); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .about-body { font-family: 'EB Garamond', serif; font-style: italic; font-size: 1.12rem; line-height: 1.85; color: #4a3265; }
+  .about-body p + p { margin-top: 1rem; }
+  .about-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.8rem; }
+  .tag { padding: 0.4rem 1.1rem; border: 1px solid var(--lavender); border-radius: 2px; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--violet); font-family: 'Jost', sans-serif; transition: background 0.3s, color 0.3s; }
+  .tag:hover { background: var(--blush); color: var(--plum); }
+  .about-quote { position: relative; padding: 2.5rem; background: var(--blush); border-left: 3px solid var(--lavender); }
+  .about-quote blockquote { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.4rem; line-height: 1.55; color: var(--plum); }
+  .about-quote cite { display: block; margin-top: 1rem; font-family: 'Jost', sans-serif; font-style: normal; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); }
+  #niches { background: var(--mist); }
+  .niches-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-top: 2.5rem; }
+  .niche-card { padding: 2.2rem 1.6rem; background: var(--white); border: 1px solid rgba(195, 168, 225, 0.3); border-radius: 3px; text-align: center; cursor: default; transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s; position: relative; overflow: hidden; }
+  .niche-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--violet), var(--gold)); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
+  .niche-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(107,63,160,0.14); border-color: var(--lavender); }
+  .niche-card:hover::after { transform: scaleX(1); }
+  .niche-icon { font-size: 2.2rem; margin-bottom: 1rem; display: block; }
+  .niche-name { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.2rem; color: var(--plum); margin-bottom: 0.6rem; }
+  .niche-desc { font-size: 0.8rem; color: #8070a0; line-height: 1.6; font-family: 'Jost', sans-serif; font-weight: 300; }
+  #picks { background: var(--white); }
+  .picks-intro { font-family: 'EB Garamond', serif; font-style: italic; font-size: 1.1rem; color: #5a3f78; max-width: 620px; line-height: 1.8; margin-bottom: 2.5rem; }
+  .picks-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.8rem; }
+  .pick-card { border: 1px solid rgba(195,168,225,0.3); border-radius: 3px; overflow: hidden; transition: transform 0.35s, box-shadow 0.35s; background: var(--mist); }
+  .pick-card:hover { transform: translateY(-5px); box-shadow: 0 14px 42px rgba(59,31,78,0.12); }
+  .pick-img { height: 180px; background: linear-gradient(135deg, var(--blush), #dcc5f5); display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+  .pick-body { padding: 1.4rem 1.6rem; }
+  .pick-cat { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); font-family: 'Jost', sans-serif; margin-bottom: 0.4rem; }
+  .pick-title { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; color: var(--plum); margin-bottom: 0.5rem; }
+  .pick-desc { font-size: 0.8rem; color: #7a6090; line-height: 1.55; font-family: 'Jost', sans-serif; font-weight: 300; margin-bottom: 1rem; }
+  .pick-link { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--violet); text-decoration: none; font-family: 'Jost', sans-serif; transition: color 0.3s; }
+  .pick-link:hover { color: var(--gold); }
+  #connect { background: var(--plum); }
+  .connect-inner { max-width: 1100px; margin: 0 auto; padding: 5rem 5vw; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 4rem; }
+  .connect-text .section-label { color: var(--gold); }
+  .connect-text .section-title { color: var(--white); }
+  .connect-body { font-family: 'EB Garamond', serif; font-style: italic; font-size: 1.1rem; color: var(--lavender); line-height: 1.8; margin-bottom: 2rem; }
+  .btn-light { background: var(--white); color: var(--plum); box-shadow: 0 4px 24px rgba(0,0,0,0.2); }
+  .btn-light:hover { background: var(--blush); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.25); }
+  .social-icons { display: flex; gap: 1.2rem; margin-top: 1.8rem; }
+  .social-icon { width: 44px; height: 44px; border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--lavender); text-decoration: none; font-size: 1.1rem; transition: background 0.3s, border-color 0.3s, color 0.3s; }
+  .social-icon:hover { background: rgba(255,255,255,0.1); border-color: var(--gold); color: var(--gold); }
+  .connect-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .stat-box { padding: 1.8rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 3px; text-align: center; }
+  .stat-number { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 300; color: var(--gold); line-height: 1; margin-bottom: 0.4rem; }
+  .stat-label { font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--lavender); font-family: 'Jost', sans-serif; }
+  #contact { background: var(--white); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-group label { font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--violet); font-family: 'Jost', sans-serif; }
+  .form-group input, .form-group textarea { padding: 0.85rem 1rem; border: 1px solid rgba(195,168,225,0.5); border-radius: 2px; background: var(--mist); color: var(--ink); font-family: 'EB Garamond', serif; font-style: italic; font-size: 1rem; outline: none; transition: border-color 0.3s; resize: none; }
+  .form-group input:focus, .form-group textarea:focus { border-color: var(--violet); }
+  .contact-info p { font-family: 'EB Garamond', serif; font-style: italic; font-size: 1.05rem; line-height: 1.8; color: #5a3f78; margin-bottom: 2rem; }
+  .contact-detail { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem; }
+  .contact-detail span { font-size: 0.78rem; letter-spacing: 0.1em; color: var(--violet); font-family: 'Jost', sans-serif; }
+  .contact-detail a { font-size: 0.78rem; letter-spacing: 0.1em; color: var(--violet); font-family: 'Jost', sans-serif; text-decoration: none; transition: color 0.3s; }
+  .contact-detail a:hover { color: var(--gold); }
+  .contact-social-icons { display: flex; gap: 1rem; margin-top: 1.5rem; }
+  .contact-social-icon { width: 42px; height: 42px; border: 1px solid var(--lavender); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--violet); text-decoration: none; transition: background 0.3s, border-color 0.3s, color 0.3s; }
+  .contact-social-icon:hover { background: var(--blush); border-color: var(--violet); color: var(--plum); }
+  footer { background: var(--ink); padding: 3rem 5vw; text-align: center; }
+  .footer-logo { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.8rem; color: var(--lavender); margin-bottom: 0.8rem; }
+  .footer-logo span { color: var(--gold); }
+  .footer-copy { font-size: 0.72rem; letter-spacing: 0.1em; color: rgba(195,168,225,0.5); font-family: 'Jost', sans-serif; }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.75s ease, transform 0.75s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; padding-top: 8rem; }
+    .hero-visual { order: -1; }
+    .profile-frame { width: min(280px, 88vw); }
+    .about-grid, .contact-grid, .connect-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .niches-grid { grid-template-columns: repeat(2, 1fr); }
+    .picks-grid { grid-template-columns: repeat(2, 1fr); }
+    .connect-stats { grid-template-columns: repeat(2, 1fr); }
+    nav ul { gap: 1.4rem; }
+  }
+  @media (max-width: 560px) {
+    nav ul { display: none; }
+    .niches-grid { grid-template-columns: repeat(2, 1fr); }
+    .picks-grid { grid-template-columns: 1fr; }
+    .btn-outline { margin-left: 0; margin-top: 0.8rem; display: block; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">san<span>__</span>verse</a>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#niches">Niches</a></li>
+    <li><a href="#picks">Picks</a></li>
+    <li><a href="https://pin.it/61KKywbG4" target="_blank" rel="noopener">Pinterest</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="home">
+  <div class="hero-text">
+    <p class="hero-eyebrow">Curated with love, by Santhiya</p>
+    <h1 class="hero-title">
+      Where style<br>
+      meets <em>intention</em>
+    </h1>
+    <p class="hero-sub">
+      Welcome to san__verse — a carefully curated space for outfits, home décor, skincare, and the products that genuinely change everyday life.
+    </p>
+    <div>
+      <a href="#picks" class="btn btn-primary">Explore Picks</a>
+      <a href="#about" class="btn btn-outline">About Me</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="profile-frame">
+      <div class="profile-photo-wrap">
+        <img id="profileImg" src="C:\Users\Santhiya M\Downloads\profile photo.png" alt="Santhiya — san__verse">
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><span class="divider-symbol">✦</span></div>
+
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid reveal">
+      <div>
+        <p class="section-label">The Person Behind the Curation</p>
+        <h2 class="section-title">Hello, I'm<br>Santhiya</h2>
+        <div class="about-body">
+          <p>I started san__verse because I believe that good taste shouldn't be gatekept. Every recommendation I share comes from genuine curiosity, hours of research, and a real love for the things that make a home feel cosy, a skin routine feel like self-care, and an outfit feel exactly right.</p>
+          <p>Through Pinterest and this space, I handpick products across fashion, beauty, and home living — the kind you'll actually reach for every day. No fluff, no filler — just things I'd tell a close friend about.</p>
+        </div>
+        <div class="about-tags">
+          <span class="tag">Honest Reviews</span>
+          <span class="tag">Thoughtful Curation</span>
+          <span class="tag">Everyday Luxury</span>
+          <span class="tag">Real Recommendations</span>
+        </div>
+      </div>
+      <div class="about-quote">
+        <blockquote>
+          "I curate the way I wish someone curated for me — with honesty, warmth, and a genuine eye for what truly works."
+        </blockquote>
+        <cite>— Santhiya, Founder of san__verse</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><span class="divider-symbol">✦</span></div>
+
+<section id="niches">
+  <div class="section-inner">
+    <p class="section-label">What You'll Find Here</p>
+    <h2 class="section-title reveal">Four Worlds,<br>One Trusted Voice</h2>
+    <div class="niches-grid">
+      <div class="niche-card reveal">
+        <span class="niche-icon">👗</span>
+        <p class="niche-name">Outfits & Style</p>
+        <p class="niche-desc">Curated fashion finds for every mood, season, and budget — from everyday basics to statement pieces worth every rupee.</p>
+      </div>
+      <div class="niche-card reveal">
+        <span class="niche-icon">🏡</span>
+        <p class="niche-name">Home Décor</p>
+        <p class="niche-desc">Transform your space with thoughtfully chosen décor, storage solutions, and cosy touches that make a house feel like home.</p>
+      </div>
+      <div class="niche-card reveal">
+        <span class="niche-icon">✨</span>
+        <p class="niche-name">Skincare</p>
+        <p class="niche-desc">Gentle, effective skincare that actually works. Ingredients-first picks for glowing, healthy skin — tried and truly loved.</p>
+      </div>
+      <div class="niche-card reveal">
+        <span class="niche-icon">🛍️</span>
+        <p class="niche-name">Everyday Products</p>
+        <p class="niche-desc">The practical, the pretty, and the unexpectedly brilliant — everyday finds that earn a permanent spot in your routine.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><span class="divider-symbol">✦</span></div>
+
+<section id="picks">
+  <div class="section-inner">
+    <p class="section-label">Hand-Picked Favourites</p>
+    <h2 class="section-title reveal">Current Recommendations</h2>
+    <p class="picks-intro reveal">Things I've tested, loved, and am happy to put my name behind. Each linked item is chosen with care — and comes with my honest opinion.</p>
+    <div class="picks-grid">
+      <div class="pick-card reveal">
+        <div class="pick-img">👗</div>
+        <div class="pick-body">
+          <p class="pick-cat">Outfits</p>
+          <p class="pick-title">Effortless Linen Co-ords</p>
+          <p class="pick-desc">Breathable, timeless, and endlessly versatile — the set I reach for when I want to look put-together without trying too hard.</p>
+          <a href="#" class="pick-link">View on Amazon →</a>
+        </div>
+      </div>
+      <div class="pick-card reveal">
+        <div class="pick-img">🕯️</div>
+        <div class="pick-body">
+          <p class="pick-cat">Home Décor</p>
+          <p class="pick-title">Warm-Toned Candle Set</p>
+          <p class="pick-desc">Soy wax, long burn time, and the kind of scent that makes your home feel like a cosy evening even on a weekday.</p>
+          <a href="#" class="pick-link">View on Amazon →</a>
+        </div>
+      </div>
+      <div class="pick-card reveal">
+        <div class="pick-img">🧴</div>
+        <div class="pick-body">
+          <p class="pick-cat">Skincare</p>
+          <p class="pick-title">Niacinamide Glow Serum</p>
+          <p class="pick-desc">A lightweight serum that visibly evened my skin tone in 3 weeks. One of the best decisions I've made for my skin this year.</p>
+          <a href="#" class="pick-link">View on Amazon →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="connect">
+  <div class="connect-inner">
+    <div class="connect-text reveal">
+      <p class="section-label">Find Me Online</p>
+      <h2 class="section-title">Follow the<br>san__verse on Pinterest</h2>
+      <p class="connect-body">Pinterest is where the curation comes alive — mood boards, outfit ideas, home inspo, and daily finds, all in one beautifully visual space. Come follow along and save what speaks to you.</p>
+      <a href="https://pin.it/61KKywbG4" target="_blank" rel="noopener" class="btn btn-light">Visit My Pinterest</a>
+      <div class="social-icons">
+        <a href="https://pin.it/61KKywbG4" target="_blank" rel="noopener" class="social-icon" title="Pinterest" aria-label="Pinterest">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/san___verse/?utm_source=ig_web_button_share_sheet" target="_blank" rel="noopener" class="social-icon" title="Instagram" aria-label="Instagram">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="connect-stats reveal">
+      <div class="stat-box"><div class="stat-number">100%</div><div class="stat-label">Genuine Picks</div></div>
+      <div class="stat-box"><div class="stat-number">4</div><div class="stat-label">Curated Niches</div></div>
+      <div class="stat-box"><div class="stat-number">✦</div><div class="stat-label">Quality First</div></div>
+      <div class="stat-box"><div class="stat-number">♡</div><div class="stat-label">Made with Love</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-inner">
+    <p class="section-label">Get in Touch</p>
+    <h2 class="section-title reveal">Say Hello</h2>
+    <div class="contact-grid">
+      <div class="contact-form reveal">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" id="senderName" placeholder="e.g. Priya Sharma">
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="senderEmail" placeholder="hello@example.com">
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea id="senderMsg" rows="5" placeholder="A collaboration idea, a question, or just to say hi…"></textarea>
+        </div>
+        <button class="btn btn-primary" style="align-self:flex-start" onclick="sendEmail()">Send Message</button>
+      </div>
+      <div class="contact-info reveal">
+        <p>Whether you're a brand looking to collaborate, a reader with a question, or just want to chat about something you love — I'd genuinely love to hear from you.</p>
+        <div class="contact-detail">
+          <span>✉</span>
+          <a href="mailto:santhiyam2385@gmail.com">santhiyam2385@gmail.com</a>
+        </div>
+        <div class="contact-detail">
+          <span>📌 Linked to Pinterest: san__verse</span>
+        </div>
+        <div class="contact-detail">
+          <span>🛒 Amazon Affiliate Partner</span>
+        </div>
+        <div class="contact-social-icons">
+          <a href="https://pin.it/61KKywbG4" target="_blank" rel="noopener" class="contact-social-icon" title="Pinterest" aria-label="Pinterest">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 01.083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/san___verse/?utm_source=ig_web_button_share_sheet" target="_blank" rel="noopener" class="contact-social-icon" title="Instagram" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">san<span>__</span>verse</div>
+  <p class="footer-copy">© 2025 san__verse by Santhiya · All rights reserved · Affiliate links may be present</p>
+</footer>
+
+<script>
+  // Scroll Reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => observer.observe(el));
+
+  // Send email via mailto
+  function sendEmail() {
+    const name = document.getElementById('senderName').value.trim();
+    const email = document.getElementById('senderEmail').value.trim();
+    const msg = document.getElementById('senderMsg').value.trim();
+    if (!name || !email || !msg) { alert('Please fill in all fields before sending.'); return; }
+    const subject = encodeURIComponent('Message from san__verse website — ' + name);
+    const body = encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\n\nMessage:\n' + msg);
+    window.location.href = 'mailto:santhiyam2385@gmail.com?subject=' + subject + '&body=' + body;
+  }
+</script>
+</body>
+</html>
